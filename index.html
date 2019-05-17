@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    *{
+      margin: 0px;
+      padding: 0px;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas"></canvas>
+</body>
+<script>
+  const winW = window.innerWidth
+  const winH = window.innerHeight
+
+  const MW = winW / 2
+  const MH = winH / 2
+
+  let canvas = document.querySelector('#canvas')
+  canvas.width = winW
+  canvas.height= winH
+
+  const v = 3000 * 1000 / 60
+  
+  let ctx = canvas.getContext('2d')
+  function render() {
+    let N = new ModelN()
+    N.drawEndLeft()
+    N.drawEndRight()
+    requestAnimationFrame(render)
+    // drawLin()
+    // drawLove()
+  }
+  class ModelN{
+    constructor() {
+      let startW = winW * 0.2
+      this.lineH = 40
+      this.r = 12
+      this.strokeStyle="red"
+      this.lineWidth="4";
+
+      // 起始点开始位置
+      this.startOneX = startW
+      this.startOneY = winH / 2 - this.lineH / 2
+
+      // 终点开始位置
+      this.startTwoX = this.startOneX
+      this.startTwoY = this.startOneY + this.lineH
+
+      this.startCurve = 0
+
+      // 起始点结束位置
+      this.endOneX = this.startOneX
+      this.endOneY = this.startOneY + this.lineH * 0.4
+
+      // 终点结束位置
+      this.endTwoX = this.endOneX + this.r * 2
+      this.endTwoY = this.startOneY + this.lineH
+
+      this.endCurve = this.lineH * 0.7
+    }
+
+    updateLeft() {
+      
+    }
+
+    drawLeft() {
+      ctx.beginPath();
+      ctx.lineWidth = this.lineWidth;
+      ctx.strokeStyle = this.strokeStyle; // 红色路径
+      ctx.moveTo(this.startOneX, this.startOneY);
+      ctx.quadraticCurveTo(this.startTwoX, this.startTwoY + this.startCurve, this.startTwoX, this.startTwoY);
+      ctx.stroke(); // 进行绘制
+    }
+
+    drawRight() {
+      ctx.beginPath();
+      ctx.lineWidth = this.lineWidth;
+      ctx.strokeStyle = this.strokeStyle; // 红色路径
+      ctx.arc(this.startOneX + this.r, this.startOneY + this.lineH * 0.4, this.r, Math.PI, 0);
+      ctx.lineTo(this.startTwoX + this.r * 2, this.startTwoY);
+      ctx.stroke(); // 进行绘制
+    }
+
+    drawEndLeft() {
+      ctx.beginPath();
+      ctx.lineWidth = this.lineWidth;
+      ctx.strokeStyle = this.strokeStyle; // 红色路径
+      ctx.moveTo(this.endOneX, this.endOneY);
+      ctx.quadraticCurveTo(this.startTwoX, this.endTwoY - this.lineH  + this.endCurve, this.endTwoX, this.endTwoY);
+      ctx.stroke(); // 进行绘制
+    }
+
+    drawEndRight() {
+      ctx.beginPath();
+      ctx.lineWidth = this.lineWidth;
+      ctx.strokeStyle = this.strokeStyle; // 红色路径
+      ctx.arc(this.endOneX + this.r, this.endOneY, this.r, Math.PI, 0);
+      ctx.lineTo(this.startTwoX + this.r * 2, this.endOneY);
+      ctx.stroke(); // 进行绘制
+    }
+  }
+
+  function drawLin() {
+    let lineH = 20
+    let startW = winW * 0.2
+    let r = 6
+    ctx.font="40px Arial";
+    ctx.textBaseline="middle";
+    ctx.fillText("n", startW , winH / 2);
+
+    ctx.beginPath();
+    ctx.lineWidth="3";
+    ctx.strokeStyle="red"; // 红色路径
+    ctx.moveTo(startW - 20, winH / 2 - lineH / 2);
+    ctx.quadraticCurveTo(startW - 20, winH / 2 + lineH / 2, startW - 20, winH / 2 + lineH / 2);
+    ctx.stroke(); // 进行绘制
+
+    ctx.beginPath();
+    ctx.lineWidth="3";
+    ctx.strokeStyle="red"; // 红色路径
+    ctx.arc(startW - 20 + r, winH / 2 - lineH / 2 + 8, r, Math.PI, 0);
+    ctx.lineTo(startW - 20 + r * 2, winH / 2 + lineH / 2);
+    ctx.stroke(); // 进行绘制
+  }
+
+  function drawLove() {
+    let lineH = 20
+    let startW = winW * 0.3
+    let r = 6
+
+    ctx.beginPath();
+    ctx.lineWidth="3";
+    ctx.strokeStyle="red"; // 红色路径
+    ctx.moveTo(startW - 20, winH / 2 - lineH / 2 + 8);
+    ctx.quadraticCurveTo(startW - 20, winH / 2 - lineH / 2 + 14, startW - 20 + r * 2, winH / 2 + lineH / 2);
+    ctx.stroke(); // 进行绘制
+
+    ctx.beginPath();
+    ctx.lineWidth="3";
+    ctx.strokeStyle="red"; // 红色路径
+    ctx.arc(startW - 20 + r, winH / 2 - lineH / 2 + 8, r, Math.PI, 0);
+    ctx.stroke(); // 进行绘制
+  }
+
+  render()
+  requestAnimationFrame(render)
+</script>
+</html>
